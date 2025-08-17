@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: hockeyshot-backend
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE_MIN
+        value: "120"
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASS
+        value: change_me
+      - key: API_KEY
+        value: demo_api_key
+    disk:
+      name: storage
+      mountPath: /app/storage
+      sizeGB: 2

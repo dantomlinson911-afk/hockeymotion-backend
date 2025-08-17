@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  hockeyshot-api:
+    build: .
+    container_name: hockeyshot-api
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-change_me}
+      - JWT_EXPIRE_MIN=${JWT_EXPIRE_MIN:-120}
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASS=${ADMIN_PASS:-admin123}
+      - API_KEY=${API_KEY:-demo_api_key}
+    volumes:
+      - ./storage:/app/storage
+      - ./models:/app/models
+    restart: unless-stopped
