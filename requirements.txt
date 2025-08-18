@@ -7,7 +7,7 @@ PyJWT==2.9.0
 opencv-python-headless==4.9.0.80
 numpy==1.26.4
 onnxruntime
-mediapipe==0.10.14
+mediapipe==0.9.1.0
 protobuf<5
 joblib==1.4.2
 scikit-learn==1.5.1
