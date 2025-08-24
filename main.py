@@ -174,3 +174,36 @@ def process_clip(video_path: str, overlay_out: str):
         "frames_analyzed": len(frames),
         "fps": fps,
     }, overlay_out
+
+# --- Optional: Self-test endpoint ---
+from fastapi import Depends
+import requests
+import os
+
+API_BASE = os.getenv("API_BASE", "https://hockeymotion-api.onrender.com")
+
+@app.get("/admin/selftest")
+def selftest():
+    """
+    Calls GET /v1/calibration using admin credentials.
+    Useful for checking that tokens and auth flow work automatically.
+    """
+    try:
+        # Login to get a token
+        r = requests.post(
+            f"{API_BASE}/v1/auth/token",
+            json={"username": os.getenv("ADMIN_USER"), "password": os.getenv("ADMIN_PASS")}
+        )
+        r.raise_for_status()
+        token = r.json()["access_token"]
+
+        # Call a protected route
+        r2 = requests.get(
+            f"{API_BASE}/v1/calibration",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        r2.raise_for_status()
+
+        return {"ok": True, "calibration": r2.json()}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
